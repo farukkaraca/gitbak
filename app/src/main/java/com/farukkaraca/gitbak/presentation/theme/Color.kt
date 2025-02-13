@@ -1,4 +1,4 @@
-package com.farukkaraca.gitbak.ui.theme
+package com.farukkaraca.gitbak.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -23,6 +23,9 @@ import com.farukkaraca.gitbak.presentation.state.UserDetailState
 fun UserDetailContent(
     state: UserDetailState,
     padding: PaddingValues,
+    onClickFollowers: () -> Unit,
+    onClickFollowing: () -> Unit,
+    onClickRepos: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -66,7 +69,18 @@ fun UserDetailContent(
                         }
 
                         item {
-                            StatsSection(user)
+                            StatsSection(
+                                user = user,
+                                onClickFollowers = {
+                                    onClickFollowers()
+                                },
+                                onClickFollowing = {
+                                    onClickFollowing()
+                                },
+                                onClickRepos = {
+                                    onClickRepos()
+                                }
+                            )
                         }
 
                         item {

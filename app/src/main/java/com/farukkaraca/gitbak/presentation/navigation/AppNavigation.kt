@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.farukkaraca.gitbak.presentation.screens.user_repos.components.UserReposScreen
+import com.farukkaraca.gitbak.presentation.screens.user_repos.UserReposScreen
 import com.farukkaraca.gitbak.presentation.screens.users.detail.UserDetailScreen
 import com.farukkaraca.gitbak.presentation.screens.users.search.UserSearchScreen
 

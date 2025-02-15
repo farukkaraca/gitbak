@@ -1,5 +1,6 @@
 package com.farukkaraca.gitbak.presentation.screens.users.detail.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -12,10 +13,13 @@ import androidx.compose.ui.text.font.FontWeight
 fun StatItem(
     count: Int,
     label: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier.clickable {
+            onClick()
+        },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(

@@ -1,4 +1,4 @@
-package com.farukkaraca.gitbak.presentation.screens.users.detail
+package com.farukkaraca.gitbak.presentation.screens.user_repos
 
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -8,15 +8,15 @@ import androidx.navigation.NavController
 import com.farukkaraca.gitbak.presentation.components.CustomTopAppBar
 
 @Composable
-fun UserDetailScreen(navController: NavController, username: String) {
-    val viewModel = hiltViewModel<UserDetailViewModel>()
+fun UserReposScreen(navController: NavController, username: String) {
+    val viewModel = hiltViewModel<UserReposViewModel>()
     val state = viewModel.state.collectAsStateWithLifecycle()
-    viewModel.getUserDetail(username)
+    viewModel.fetchUserRepos(username)
 
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                title = "User Detail",
+                title = "User Repositories",
                 showBackButton = true,
                 onBackClick = {
                     navController.popBackStack()
@@ -25,18 +25,9 @@ fun UserDetailScreen(navController: NavController, username: String) {
         }
     ) { padding ->
 
-        UserDetailContent(
+        UserReposContent(
             padding = padding,
-            state = state.value,
-            onClickFollowers = {
-
-            },
-            onClickFollowing = {
-
-            },
-            onClickRepos = {
-                navController.navigate("user_repos/$username")
-            }
+            state = state.value
         )
     }
 }

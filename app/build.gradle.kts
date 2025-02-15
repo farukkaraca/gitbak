@@ -78,6 +78,8 @@ dependencies {
     implementation(libs.coil.compose)
 
     implementation(libs.retrofit)
+    implementation(libs.logging.interceptor)
+
 
     implementation(libs.androidx.material.icons.extended)
 

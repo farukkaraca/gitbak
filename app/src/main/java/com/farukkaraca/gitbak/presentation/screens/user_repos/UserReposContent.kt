@@ -7,11 +7,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -19,6 +20,7 @@ import com.farukkaraca.gitbak.presentation.components.InfoText
 import com.farukkaraca.gitbak.presentation.components.LoadingAnimation
 import com.farukkaraca.gitbak.presentation.screens.user_repos.components.RepoCard
 import com.farukkaraca.gitbak.presentation.state.UserReposState
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Composable
 fun UserReposContent(
@@ -27,6 +29,17 @@ fun UserReposContent(
     onScroll: (page: Int) -> Unit
 ) {
     val listState = rememberLazyListState()
+
+    LaunchedEffect(listState, state.repos) {
+        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+            .distinctUntilChanged()
+            .collect { lastIndex ->
+                if (lastIndex == state.repos.lastIndex) {
+                    onScroll(state.page + 1)
+                }
+            }
+    }
+
 
     Box(
         modifier = Modifier
@@ -64,18 +77,14 @@ fun UserReposContent(
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(state.repos) { repo ->
+                    itemsIndexed(state.repos) { index, repo ->
                         RepoCard(
                             repo = repo
                         )
                     }
 
-                    itemsIndexed(state.repos) { index, repo ->
-                        RepoCard(
-                            repo = repo
-                        )
-
-                        if (index == state.repos.lastIndex) {
+                    if (state.isScroll) {
+                        item {
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -84,7 +93,6 @@ fun UserReposContent(
                             ) {
                                 CircularProgressIndicator()
                             }
-                            onScroll(state.page + 1)
                         }
                     }
                 }

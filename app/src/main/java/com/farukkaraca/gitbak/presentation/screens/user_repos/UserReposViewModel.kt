@@ -22,6 +22,13 @@ class UserReposViewModel @Inject constructor(
 
     fun fetchUserRepos(username: String, page: Int) {
         viewModelScope.launch {
+            if (page != state.value.page) {
+                _state.update {
+                    it.copy(
+                        isScroll = true
+                    )
+                }
+            }
             _state.update {
                 it.copy(
                     page = page,
@@ -43,6 +50,7 @@ class UserReposViewModel @Inject constructor(
                         _state.update {
                             it.copy(
                                 isLoading = false,
+                                isScroll = false,
                                 repos = repos
                             )
                         }
@@ -51,6 +59,7 @@ class UserReposViewModel @Inject constructor(
                         _state.update {
                             it.copy(
                                 isLoading = false,
+                                isScroll = false,
                                 repos = result.data
                             )
                         }
@@ -61,6 +70,7 @@ class UserReposViewModel @Inject constructor(
                     _state.update {
                         it.copy(
                             isLoading = false,
+                            isScroll = false,
                             error = Error(
                                 isError = true,
                                 message = result.exception.message

@@ -11,5 +11,6 @@ data class User(
     val id: Int? = null,
     val node_id: String? = null,
     val avatar_url: String? = null,
-    val html_url: String? = null
+    val html_url: String? = null,
+    val score: String? = null,
 )

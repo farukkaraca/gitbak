@@ -5,45 +5,43 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.farukkaraca.gitbak.presentation.theme.GitBakTheme
+import com.farukkaraca.gitbak.presentation.users.UserSearchScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private lateinit var mainViewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        mainViewModel = ViewModelProvider(this)[MainViewModel::class]
+
         enableEdgeToEdge()
         setContent {
+            val state = mainViewModel.mainState.collectAsStateWithLifecycle()
+
             GitBakTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                    UserSearchScreen(
+                        isLoading =  state.value.isLoading,
+                        users = state.value.userSearchResponse?.items,
+                        onSearch = {
+                            mainViewModel.searchUsers(it)
+                        },
+                        onClickUser = {
+
+                        },
+                        resetSearch = {
+                            mainViewModel.resetSearch()
+                        }
                     )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    GitBakTheme {
-        Greeting("Android")
     }
 }

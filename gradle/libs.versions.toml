@@ -12,7 +12,7 @@ composeBom = "2024.04.01"
 hilt = "2.51.1"
 room = "2.6.1"
 retrofit = "2.11.0"
-coilCompose = "3.1.0"
+coilCompose = "2.6.0"
 lifecycleRuntimeCompose = "2.8.7"
 materialIconsExtended = "1.7.8"
 converterGson = "2.9.0"
@@ -43,7 +43,7 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 
-coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeCompose" }

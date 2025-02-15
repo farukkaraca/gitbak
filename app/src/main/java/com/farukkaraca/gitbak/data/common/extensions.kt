@@ -1,4 +1,4 @@
-package com.farukkaraca.gitbak.extension
+package com.farukkaraca.gitbak.data.common
 
 import com.farukkaraca.gitbak.data.model.ApiResponse
 import retrofit2.Response

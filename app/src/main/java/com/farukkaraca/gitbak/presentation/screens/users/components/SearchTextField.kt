@@ -1,4 +1,4 @@
-package com.farukkaraca.gitbak.presentation.users.components
+package com.farukkaraca.gitbak.presentation.screens.users.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

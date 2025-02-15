@@ -1,4 +1,4 @@
-package com.farukkaraca.gitbak.presentation.users.components
+package com.farukkaraca.gitbak.presentation.screens.users.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

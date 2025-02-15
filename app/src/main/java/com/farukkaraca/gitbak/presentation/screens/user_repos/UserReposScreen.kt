@@ -11,7 +11,7 @@ import com.farukkaraca.gitbak.presentation.components.CustomTopAppBar
 fun UserReposScreen(navController: NavController, username: String) {
     val viewModel = hiltViewModel<UserReposViewModel>()
     val state = viewModel.state.collectAsStateWithLifecycle()
-    viewModel.fetchUserRepos(username)
+    viewModel.fetchUserRepos(username = username, page = 1)
 
     Scaffold(
         topBar = {
@@ -27,7 +27,10 @@ fun UserReposScreen(navController: NavController, username: String) {
 
         UserReposContent(
             padding = padding,
-            state = state.value
+            state = state.value,
+            onScroll = { page ->
+                viewModel.fetchUserRepos(username, page)
+            }
         )
     }
 }

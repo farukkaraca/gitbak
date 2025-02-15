@@ -15,13 +15,21 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
 
     override suspend fun searchUsers(query: String): ApiResponse<UserSearchResponse> {
-        val response = apiService.searchUsers(query)
-        return response.toResult()
+        try {
+            val response = apiService.searchUsers(query)
+            return response.toResult()
+        } catch (e: Exception) {
+            return ApiResponse.Error(e)
+        }
     }
 
     override suspend fun getUserDetail(username: String): ApiResponse<UserDetail> {
-        val response = apiService.getUserDetail(username)
-        return response.toResult()
+        try {
+            val response = apiService.getUserDetail(username)
+            return response.toResult()
+        } catch (e: Exception) {
+            return ApiResponse.Error(e)
+        }
     }
 
     override suspend fun getUserRepositories(
@@ -29,7 +37,11 @@ class UserRepositoryImpl @Inject constructor(
         page: Int,
         perPage: Int
     ): ApiResponse<List<GithubRepo>> {
-        val response = apiService.getUserRepositories(username, page, perPage)
-        return response.toResult()
+        try {
+            val response = apiService.getUserRepositories(username, page, perPage)
+            return response.toResult()
+        } catch (e: Exception) {
+            return ApiResponse.Error(e)
+        }
     }
 }

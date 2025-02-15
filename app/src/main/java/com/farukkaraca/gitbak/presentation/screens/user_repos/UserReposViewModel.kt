@@ -20,11 +20,11 @@ class UserReposViewModel @Inject constructor(
     private val _state = MutableStateFlow<UserReposState>(UserReposState())
     val state = _state.asStateFlow()
 
-    fun fetchUserRepos(username: String) {
+    fun fetchUserRepos(username: String, page: Int) {
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    isLoading = true,
+                    page = page,
                 )
             }
 
@@ -36,11 +36,24 @@ class UserReposViewModel @Inject constructor(
 
             when (result) {
                 is ApiResponse.Success -> {
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            repos = result.data
-                        )
+                    if (state.value.repos.isNotEmpty()) {
+                        val repos = state.value.repos.toMutableList()
+                        repos.addAll(result.data)
+
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                                repos = repos
+                            )
+                        }
+
+                    } else {
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                                repos = result.data
+                            )
+                        }
                     }
                 }
 

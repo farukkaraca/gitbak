@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -8,6 +10,10 @@ plugins {
 
 hilt {
     enableAggregatingTask = false
+}
+
+val localProperties = Properties().apply {
+    load(rootProject.file("local.properties").inputStream())
 }
 
 android {
@@ -22,6 +28,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "GITHUB_CLIENT_ID", "\"${localProperties["GITHUB_CLIENT_ID"]}\"")
+        buildConfigField("String", "GITHUB_CLIENT_SECRET", "\"${localProperties["GITHUB_CLIENT_SECRET"]}\"")
     }
 
     buildTypes {
@@ -42,6 +51,10 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 }
 

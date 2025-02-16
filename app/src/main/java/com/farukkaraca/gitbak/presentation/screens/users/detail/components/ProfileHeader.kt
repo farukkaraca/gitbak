@@ -20,10 +20,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.farukkaraca.gitbak.data.model.UserDetail
+import com.farukkaraca.gitbak.presentation.state.ProfileState
+import com.farukkaraca.gitbak.presentation.state.UserDetailState
 
 @Composable
-fun ProfileHeader(user: UserDetail) {
+fun ProfileHeader(
+    userDetailState: UserDetailState? = null,
+    profileState: ProfileState ? = null,
+    onClickFollowButton: (username: String) -> Unit = {}
+) {
+
+    val user = if (userDetailState != null) {
+        userDetailState.userDetail
+    } else {
+        profileState?.userDetail
+    }
+
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -32,7 +45,7 @@ fun ProfileHeader(user: UserDetail) {
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(user.avatar_url)
+                .data(user?.avatar_url)
                 .crossfade(true)
                 .build(),
             contentDescription = "Profile picture",
@@ -46,19 +59,32 @@ fun ProfileHeader(user: UserDetail) {
         Spacer(modifier = Modifier.height(28.dp))
 
         Text(
-            text = user.name ?: user.login,
+            text = user?.name ?: (user?.login + ""),
             style = MaterialTheme.typography.headlineMedium.copy(
                 fontWeight = FontWeight.Bold
             )
         )
 
-        if (!user.name.isNullOrBlank()) {
+        if (!user?.name.isNullOrBlank()) {
             Text(
-                text = user.login,
+                text = user?.login + "",
                 style = MaterialTheme.typography.titleMedium.copy(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                 )
             )
+        }
+
+        Spacer(modifier = Modifier.height(28.dp))
+
+        userDetailState?.let {
+            FollowButton(
+                isLoading = userDetailState.isLoadingFollowUser,
+                isFollowing = userDetailState.isFollowingUser,
+            ) {
+                userDetailState.userDetail?.login?.let(onClickFollowButton)
+            }
+
+            Spacer(modifier = Modifier.height(28.dp))
         }
     }
 }

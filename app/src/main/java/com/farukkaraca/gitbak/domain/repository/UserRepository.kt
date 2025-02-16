@@ -27,4 +27,8 @@ interface UserRepository {
         page: Int,
         perPage: Int
     ): ApiResponse<List<User>>
+
+    suspend fun isFollowingUser(username: String): ApiResponse<Boolean>
+    suspend fun followUser(username: String): ApiResponse<Boolean>
+    suspend fun unFollowUser(username: String): ApiResponse<Boolean>
 }

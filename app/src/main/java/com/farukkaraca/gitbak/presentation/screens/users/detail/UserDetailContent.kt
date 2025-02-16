@@ -26,6 +26,7 @@ fun UserDetailContent(
     onClickFollowers: () -> Unit,
     onClickFollowing: () -> Unit,
     onClickRepos: () -> Unit,
+    onClickFollowButton: (username: String) -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -56,7 +57,12 @@ fun UserDetailContent(
                         contentPadding = PaddingValues(16.dp)
                     ) {
                         item {
-                            ProfileHeader(user)
+                            ProfileHeader(
+                                userDetailState = state,
+                                onClickFollowButton = {
+                                    onClickFollowButton(it)
+                                }
+                            )
                         }
 
                         if (!user.bio.isNullOrBlank()) {
@@ -92,8 +98,3 @@ fun UserDetailContent(
         }
     }
 }
-
-
-
-
-

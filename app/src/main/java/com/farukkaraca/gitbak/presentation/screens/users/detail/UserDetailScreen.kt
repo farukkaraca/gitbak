@@ -39,6 +39,9 @@ fun UserDetailScreen(navController: NavController, username: String) {
             },
             onClickRepos = {
                 navController.navigate("$USER_REPOS_SCREEN/$username")
+            },
+            onClickFollowButton = {
+                viewModel.onClickFollowButton(it)
             }
         )
     }

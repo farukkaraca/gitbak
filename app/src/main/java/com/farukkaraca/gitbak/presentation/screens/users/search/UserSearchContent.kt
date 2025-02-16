@@ -3,9 +3,7 @@ package com.farukkaraca.gitbak.presentation.screens.users.search
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -37,7 +35,7 @@ fun UserSearchContent(
     Column(
         modifier = Modifier
             .padding(padding)
-            .padding(16.dp)
+            .padding(horizontal = 16.dp)
     ) {
 
         SearchTextField(
@@ -50,8 +48,6 @@ fun UserSearchContent(
             },
             resetSearch = resetSearch
         )
-
-        Spacer(modifier = Modifier.height(4.dp))
 
         if (state.isLoading && query.isNotBlank()) {
             Box(

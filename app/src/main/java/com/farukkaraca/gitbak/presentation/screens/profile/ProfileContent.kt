@@ -56,7 +56,9 @@ fun ProfileContent(
                         contentPadding = PaddingValues(16.dp)
                     ) {
                         item {
-                            ProfileHeader(user)
+                            ProfileHeader(
+                                profileState = state
+                            )
                         }
 
                         if (!user.bio.isNullOrBlank()) {

@@ -41,6 +41,7 @@ fun SearchTextField(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 2.dp)
+            .padding(bottom = 8.dp)
             .height(56.dp),
         placeholder = {
             Text(

@@ -5,7 +5,9 @@ import com.farukkaraca.gitbak.data.model.User
 import com.farukkaraca.gitbak.data.model.UserDetail
 import com.farukkaraca.gitbak.data.model.UserSearchResponse
 import retrofit2.Response
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -43,4 +45,19 @@ interface GitHubAuthenticatedApiService {
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
     ): Response<List<User>>
+
+    @GET("user/following/{username}")
+    suspend fun isFollowingUser(
+        @Path("username") username: String
+    ): Response<Unit>
+
+    @PUT("user/following/{username}")
+    suspend fun followUser(
+        @Path("username") username: String
+    ): Response<Unit>
+
+    @DELETE("user/following/{username}")
+    suspend fun unfollowUser(
+        @Path("username") username: String
+    ): Response<Unit>
 }

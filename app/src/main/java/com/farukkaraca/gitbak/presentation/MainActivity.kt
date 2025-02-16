@@ -6,12 +6,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.farukkaraca.gitbak.BuildConfig
 import com.farukkaraca.gitbak.presentation.navigation.AppNavigation
 import com.farukkaraca.gitbak.presentation.navigation.BottomNavigation
+import com.farukkaraca.gitbak.presentation.navigation.ONBOARDING_SCREEN
+import com.farukkaraca.gitbak.presentation.navigation.USER_SEARCH_SCREEN
 import com.farukkaraca.gitbak.presentation.theme.GitBakTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,24 +29,42 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val state = mainViewModel.state.collectAsStateWithLifecycle()
-            val navController = rememberNavController()
+            val usersNavController = rememberNavController()
+            val profileNavController = rememberNavController()
+
+            LaunchedEffect(state.value.loginSuccess) {
+                if (state.value.loginSuccess) {
+                    usersNavController.navigate(USER_SEARCH_SCREEN) {
+                        popUpTo(ONBOARDING_SCREEN) { inclusive = true }
+                    }
+                }
+            }
+
+            LaunchedEffect(state.value.isLogout) {
+                if (state.value.isLogout) {
+                    usersNavController.navigate(ONBOARDING_SCREEN) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            }
 
             GitBakTheme {
 
                 if (state.value.loginSuccess) {
                     BottomNavigation(
                         state = state.value,
-                        navController = navController,
+                        navController = usersNavController,
+                        profileNavController = profileNavController,
                         onLoginClick = {
                             onClickLogin()
                         },
                         onClickLogout = {
                             mainViewModel.logout()
-                        }
+                        },
                     )
                 } else {
                     AppNavigation(
-                        navController = navController,
+                        navController = usersNavController,
                         state = state.value,
                         onLoginClick = {
                             onClickLogin()

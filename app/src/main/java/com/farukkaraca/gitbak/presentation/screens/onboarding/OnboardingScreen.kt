@@ -36,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.farukkaraca.gitbak.R
 import com.farukkaraca.gitbak.presentation.components.LoadingAnimation
+import com.farukkaraca.gitbak.presentation.navigation.ONBOARDING_SCREEN
+import com.farukkaraca.gitbak.presentation.navigation.USER_SEARCH_SCREEN
 import com.farukkaraca.gitbak.presentation.state.MainState
 
 @Composable
@@ -43,7 +45,6 @@ fun OnboardingScreen(
     navController: NavController,
     state: MainState,
     onLoginClick: () -> Unit,
-    onContinueWithoutLogin: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -58,8 +59,7 @@ fun OnboardingScreen(
                 } else {
                     Modifier
                 }
-            )
-        ,
+            ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
@@ -117,7 +117,10 @@ fun OnboardingScreen(
                 )
             ) {
                 if (state.isLoading) {
-                    LoadingAnimation()
+                    LoadingAnimation(
+                        circleColor = MaterialTheme.colorScheme.onPrimary,
+                        circleSize = 10.dp
+                    )
                 } else {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -140,7 +143,11 @@ fun OnboardingScreen(
             }
 
             TextButton(
-                onClick = onContinueWithoutLogin,
+                onClick = {
+                    navController.navigate(USER_SEARCH_SCREEN) {
+                        popUpTo(ONBOARDING_SCREEN) { inclusive = true }
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(20.dp)
@@ -162,6 +169,5 @@ private fun OnboardingPreview() {
         navController = NavController(LocalContext.current),
         state = MainState(),
         onLoginClick = {},
-        onContinueWithoutLogin = {},
     )
 }

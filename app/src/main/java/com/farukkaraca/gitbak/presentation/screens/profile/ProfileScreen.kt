@@ -29,6 +29,7 @@ fun ProfileScreen(
         topBar = {
             CustomTopAppBar(
                 title = "My Profile",
+                hasAction = true,
                 actions = {
                     IconButton(
                         onClick = {

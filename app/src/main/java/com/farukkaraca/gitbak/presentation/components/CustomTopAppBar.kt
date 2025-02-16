@@ -28,7 +28,8 @@ fun CustomTopAppBar(
     title: String,
     showBackButton: Boolean = false,
     onBackClick: () -> Unit = {},
-    actions: @Composable () -> Unit = {}
+    hasAction: Boolean = false,
+    actions: @Composable () -> Unit? = {}
 ) {
     TopAppBar(
         modifier = modifier,
@@ -39,7 +40,7 @@ fun CustomTopAppBar(
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.SemiBold,
                     letterSpacing = 2.sp,
-                    textAlign = if (!showBackButton) TextAlign.Center else TextAlign.Start
+                    textAlign = if(showBackButton || hasAction) TextAlign.Start else TextAlign.Center
                 ),
                 color = MaterialTheme.colorScheme.onSurface
             )

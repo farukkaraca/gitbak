@@ -24,7 +24,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.farukkaraca.gitbak.presentation.screens.profile.ProfileScreen
 import com.farukkaraca.gitbak.presentation.state.MainState
 
 @Composable
@@ -32,7 +31,8 @@ fun BottomNavigation(
     state: MainState,
     onLoginClick: () -> Unit,
     onClickLogout: () -> Unit,
-    navController: NavHostController
+    navController: NavHostController,
+    profileNavController: NavHostController,
 ) {
     var selectedTab by remember { mutableStateOf(0) }
 
@@ -91,17 +91,10 @@ fun BottomNavigation(
                     onLoginClick = onLoginClick
                 )
 
-                1 -> ProfileScreen(
-                    onClickLogout = onClickLogout,
-                    onClickFollowing = {
-
-                    },
-                    onClickFollowers = {
-
-                    },
-                    onClickRepos = {
-                        navController.navigate("$USER_REPOS_SCREEN/${it.login}")
-                    },
+                1 -> ProfileNavigation(
+                    navController = profileNavController,
+                    state = state,
+                    onClickLogout = onClickLogout
                 )
             }
         }
@@ -115,6 +108,7 @@ private fun BottomNavigationPref() {
         state = MainState(),
         onLoginClick = {},
         onClickLogout = {},
-        navController = NavHostController(LocalContext.current)
+        navController = NavHostController(LocalContext.current),
+        profileNavController = NavHostController(LocalContext.current),
     )
 }

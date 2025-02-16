@@ -29,6 +29,11 @@ class UserReposViewModel @Inject constructor(
                     )
                 }
             }
+
+            if (page == 1 && state.value.repos.isNotEmpty()) {
+                return@launch
+            }
+
             _state.update {
                 it.copy(
                     page = page,

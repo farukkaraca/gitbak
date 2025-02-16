@@ -1,6 +1,7 @@
 package com.farukkaraca.gitbak.data.remote.service
 
 import com.farukkaraca.gitbak.data.model.GithubRepo
+import com.farukkaraca.gitbak.data.model.User
 import com.farukkaraca.gitbak.data.model.UserDetail
 import com.farukkaraca.gitbak.data.model.UserSearchResponse
 import retrofit2.Response
@@ -25,4 +26,19 @@ interface GitHubApiService {
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
     ): Response<List<GithubRepo>>
+
+
+    @GET("users/{username}/followers")
+    suspend fun getUserFollowers(
+        @Path("username") username: String,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int
+    ): Response<List<User>>
+
+    @GET("users/{username}/following")
+    suspend fun getUserFollowing(
+        @Path("username") username: String,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int
+    ): Response<List<User>>
 }

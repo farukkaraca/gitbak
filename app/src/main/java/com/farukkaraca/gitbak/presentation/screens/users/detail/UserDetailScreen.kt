@@ -6,6 +6,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.farukkaraca.gitbak.presentation.components.CustomTopAppBar
+import com.farukkaraca.gitbak.presentation.navigation.FOLLOWERS_SCREEN
+import com.farukkaraca.gitbak.presentation.navigation.FOLLOWING_SCREEN
 import com.farukkaraca.gitbak.presentation.navigation.USER_REPOS_SCREEN
 
 @Composable
@@ -30,10 +32,10 @@ fun UserDetailScreen(navController: NavController, username: String) {
             padding = padding,
             state = state.value,
             onClickFollowers = {
-
+                navController.navigate("$FOLLOWERS_SCREEN/$username")
             },
             onClickFollowing = {
-
+                navController.navigate("$FOLLOWING_SCREEN/$username")
             },
             onClickRepos = {
                 navController.navigate("$USER_REPOS_SCREEN/$username")

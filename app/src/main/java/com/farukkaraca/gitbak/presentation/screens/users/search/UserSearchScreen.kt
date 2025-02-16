@@ -6,6 +6,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.farukkaraca.gitbak.presentation.components.CustomTopAppBar
+import com.farukkaraca.gitbak.presentation.navigation.USER_DETAIL_SCREEN
+import com.farukkaraca.gitbak.presentation.navigation.USER_REPOS_SCREEN
 
 @Composable
 fun UserSearchScreen(
@@ -30,7 +32,7 @@ fun UserSearchScreen(
             },
             onClickUser = { user ->
                 user.login?.let { username ->
-                    navController.navigate("user_detail/$username")
+                    navController.navigate("$USER_DETAIL_SCREEN/$username")
                 }
             },
             resetSearch = {

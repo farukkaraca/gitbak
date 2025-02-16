@@ -1,11 +1,13 @@
-package com.farukkaraca.gitbak.presentation.screens.profile
+package com.farukkaraca.gitbak.presentation.screens.shared.ff
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.farukkaraca.gitbak.data.model.ApiResponse
-import com.farukkaraca.gitbak.domain.usecase.GetUserProfileUseCase
+import com.farukkaraca.gitbak.domain.usecase.UserFollowersUseCase
+import com.farukkaraca.gitbak.domain.usecase.UserFollowingUseCase
 import com.farukkaraca.gitbak.presentation.state.Error
-import com.farukkaraca.gitbak.presentation.state.ProfileState
+import com.farukkaraca.gitbak.presentation.state.FFType
+import com.farukkaraca.gitbak.presentation.state.UserFFState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,32 +15,42 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 @HiltViewModel
-class ProfileViewModel @Inject constructor(
-    private val profileUseCase: GetUserProfileUseCase
+class FFScreenViewModel @Inject constructor(
+    private val followingUseCase: UserFollowingUseCase,
+    private val followersUseCase: UserFollowersUseCase
 ) : ViewModel() {
-    private val _state = MutableStateFlow<ProfileState>(ProfileState())
+    private val _state = MutableStateFlow<UserFFState>(UserFFState())
     val state = _state.asStateFlow()
 
-    fun getUserDetail() {
+    fun fetchUsers(username: String, page: Int) {
         viewModelScope.launch {
-            if (state.value.userDetail != null) {
+            if (state.value.type == FFType.None.name) {
                 return@launch
             }
-            _state.update {
-                it.copy(
-                    isLoading = true,
+
+            val result = if (state.value.type == FFType.Followers.name) {
+                followingUseCase.execute(
+                    username = username,
+                    page = page,
+                    perPage = state.value.perPage
+                )
+            } else {
+                followersUseCase.execute(
+                    username = username,
+                    page = page,
+                    perPage = state.value.perPage
                 )
             }
 
-            val result = profileUseCase.execute()
 
             when (result) {
                 is ApiResponse.Success -> {
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            userDetail = result.data
+                            users = result.data
                         )
                     }
                 }
@@ -57,6 +69,14 @@ class ProfileViewModel @Inject constructor(
 
                 else -> {}
             }
+        }
+    }
+
+    fun setType(type: String) {
+        _state.update {
+            it.copy(
+                type = type
+            )
         }
     }
 }

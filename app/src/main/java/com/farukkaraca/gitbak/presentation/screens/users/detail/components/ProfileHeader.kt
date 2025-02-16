@@ -77,14 +77,16 @@ fun ProfileHeader(
         Spacer(modifier = Modifier.height(28.dp))
 
         userDetailState?.let {
-            FollowButton(
-                isLoading = userDetailState.isLoadingFollowUser,
-                isFollowing = userDetailState.isFollowingUser,
-            ) {
-                userDetailState.userDetail?.login?.let(onClickFollowButton)
-            }
+            if (userDetailState.isLoggedIn) {
+                FollowButton(
+                    isLoading = userDetailState.isLoadingFollowUser,
+                    isFollowing = userDetailState.isFollowingUser,
+                ) {
+                    userDetailState.userDetail?.login?.let(onClickFollowButton)
+                }
 
-            Spacer(modifier = Modifier.height(28.dp))
+                Spacer(modifier = Modifier.height(28.dp))
+            }
         }
     }
 }

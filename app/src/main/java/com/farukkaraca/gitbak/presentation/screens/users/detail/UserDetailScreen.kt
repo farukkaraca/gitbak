@@ -6,6 +6,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.farukkaraca.gitbak.presentation.components.CustomTopAppBar
+import com.farukkaraca.gitbak.presentation.navigation.USER_REPOS_SCREEN
 
 @Composable
 fun UserDetailScreen(navController: NavController, username: String) {
@@ -35,7 +36,7 @@ fun UserDetailScreen(navController: NavController, username: String) {
 
             },
             onClickRepos = {
-                navController.navigate("user_repos/$username")
+                navController.navigate("$USER_REPOS_SCREEN/$username")
             }
         )
     }

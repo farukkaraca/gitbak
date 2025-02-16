@@ -4,4 +4,5 @@ data class MainState(
     val isLoading: Boolean = false,
     val error: Error = Error(),
     val loginSuccess: Boolean = false,
+    val isLogout: Boolean = false,
 )

@@ -25,4 +25,7 @@ interface GitHubAuthenticatedApiService {
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
     ): Response<List<GithubRepo>>
+
+    @GET("user")
+    suspend fun getUserProfile(): Response<UserDetail>
 }

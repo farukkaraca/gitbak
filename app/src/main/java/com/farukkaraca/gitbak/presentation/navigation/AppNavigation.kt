@@ -2,9 +2,9 @@ package com.farukkaraca.gitbak.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.farukkaraca.gitbak.presentation.screens.onboarding.OnboardingScreen
 import com.farukkaraca.gitbak.presentation.screens.user_repos.UserReposScreen
 import com.farukkaraca.gitbak.presentation.screens.users.detail.UserDetailScreen
@@ -13,15 +13,22 @@ import com.farukkaraca.gitbak.presentation.state.MainState
 
 @Composable
 fun AppNavigation(
+    navController: NavHostController,
     state: MainState,
     onLoginClick: () -> Unit,
 ) {
-    val navController = rememberNavController()
-
     LaunchedEffect(state.loginSuccess) {
         if (state.loginSuccess) {
             navController.navigate(USER_SCREEN) {
                 popUpTo(ONBOARDING_SCREEN) { inclusive = true }
+            }
+        }
+    }
+
+    LaunchedEffect(state.isLogout) {
+        if (state.isLogout) {
+            navController.navigate(ONBOARDING_SCREEN) {
+                popUpTo(0) { inclusive = true }
             }
         }
     }

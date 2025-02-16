@@ -1,13 +1,11 @@
-package com.farukkaraca.gitbak.presentation
+package com.farukkaraca.gitbak.presentation.screens.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.farukkaraca.gitbak.data.model.AccessToken
 import com.farukkaraca.gitbak.data.model.ApiResponse
-import com.farukkaraca.gitbak.data.session.SessionManager
-import com.farukkaraca.gitbak.domain.usecase.GithubAuthUseCase
+import com.farukkaraca.gitbak.domain.usecase.GetUserProfileUseCase
 import com.farukkaraca.gitbak.presentation.state.Error
-import com.farukkaraca.gitbak.presentation.state.MainState
+import com.farukkaraca.gitbak.presentation.state.ProfileState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,32 +14,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
-    private val sessionManager: SessionManager,
-    private val githubAuthUseCase: GithubAuthUseCase
+class ProfileViewModel @Inject constructor(
+    private val profileUseCase: GetUserProfileUseCase
 ) : ViewModel() {
-    private val _state = MutableStateFlow<MainState>(MainState())
+    private val _state = MutableStateFlow<ProfileState>(ProfileState())
     val state = _state.asStateFlow()
 
-    fun userIsLogging(): Boolean {
-        return sessionManager.checkIsLoggedIn()
-    }
-
-    fun login(accessToken: AccessToken) {
-        sessionManager.login(accessToken)
-    }
-
-    fun logout() {
-        sessionManager.logout()
-        _state.update {
-            it.copy(
-                isLogout = true,
-                loginSuccess = false
-            )
-        }
-    }
-
-    fun fetchAccessToken(autCode: String) {
+    fun getUserDetail() {
         viewModelScope.launch {
             _state.update {
                 it.copy(
@@ -49,18 +28,14 @@ class MainViewModel @Inject constructor(
                 )
             }
 
-            val result = githubAuthUseCase.execute(autCode)
+            val result = profileUseCase.execute()
 
             when (result) {
                 is ApiResponse.Success -> {
-                    login(
-                        result.data
-                    )
-
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            loginSuccess = true
+                            userDetail = result.data
                         )
                     }
                 }

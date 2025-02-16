@@ -43,7 +43,7 @@ fun ProfileHeader(user: UserDetail) {
             contentScale = ContentScale.Crop
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(28.dp))
 
         Text(
             text = user.name ?: user.login,

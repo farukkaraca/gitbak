@@ -63,4 +63,17 @@ class UserRepositoryImpl @Inject constructor(
             return ApiResponse.Error(e)
         }
     }
+
+    override suspend fun getUserProfile(): ApiResponse<UserDetail> {
+        try {
+            if (sessionManager.checkIsLoggedIn()) {
+                val response = authenticatedApiService.getUserProfile()
+                return response.toResult()
+            } else {
+                return ApiResponse.Error(Exception("auth required"))
+            }
+        } catch (e: Exception) {
+            return ApiResponse.Error(e)
+        }
+    }
 }

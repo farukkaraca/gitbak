@@ -28,6 +28,7 @@ fun CustomTopAppBar(
     title: String,
     showBackButton: Boolean = false,
     onBackClick: () -> Unit = {},
+    actions: @Composable () -> Unit = {}
 ) {
     TopAppBar(
         modifier = modifier,
@@ -62,6 +63,10 @@ fun CustomTopAppBar(
                 // AppBar.kt -> TopAppBarHorizontalPadding
                 Box(Modifier.offset(y = (-4).dp))
             }
+        },
+
+        actions = {
+            actions()
         },
 
         colors = TopAppBarDefaults.topAppBarColors(

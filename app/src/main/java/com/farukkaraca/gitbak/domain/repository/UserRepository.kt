@@ -13,4 +13,6 @@ interface UserRepository {
         page: Int,
         perPage: Int
     ): ApiResponse<List<GithubRepo>>
+
+    suspend fun getUserProfile(): ApiResponse<UserDetail>
 }

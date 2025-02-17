@@ -145,18 +145,28 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun followUser(username: String): ApiResponse<Boolean> {
-        try {
+        return try {
             val response = authenticatedApiService.followUser(username)
-            return ApiResponse.Success(response.code() == 204)
+            when (response.code()) {
+                204 -> ApiResponse.Success(true)
+                404 -> ApiResponse.Success(false)
+                401 -> ApiResponse.Error(Exception("Unauthorized"))
+                else -> ApiResponse.Error(Exception("Unknown error: ${response.code()}"))
+            }
         } catch (e: Exception) {
-            return ApiResponse.Error(e)
+            ApiResponse.Error(e)
         }
     }
 
     override suspend fun unFollowUser(username: String): ApiResponse<Boolean> {
-        try {
+        return try {
             val response = authenticatedApiService.unfollowUser(username)
-            return ApiResponse.Success(response.code() == 204)
+            when (response.code()) {
+                204 -> ApiResponse.Success(true)
+                404 -> ApiResponse.Success(false)
+                401 -> ApiResponse.Error(Exception("Unauthorized"))
+                else -> ApiResponse.Error(Exception("Unknown error: ${response.code()}"))
+            }
         } catch (e: Exception) {
             return ApiResponse.Error(e)
         }

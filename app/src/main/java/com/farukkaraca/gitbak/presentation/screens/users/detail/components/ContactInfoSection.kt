@@ -33,7 +33,9 @@ fun ContactInfoSection(user: UserDetail) {
             ProfileSection(Icons.Rounded.Email, it)
         }
         user.blog?.let {
-            ProfileSection(Icons.Rounded.Link, it)
+            if (it.isNotEmpty()) {
+                ProfileSection(Icons.Rounded.Link, it)
+            }
         }
         user.twitter_username?.let {
             ProfileSection(Icons.Rounded.Tag, "@$it")

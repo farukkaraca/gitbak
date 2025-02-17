@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.farukkaraca.gitbak.data.model.UserDetail
+import com.farukkaraca.gitbak.presentation.common.toBottomlessPadding
 import com.farukkaraca.gitbak.presentation.components.CustomTopAppBar
 
 @Composable
@@ -48,7 +49,7 @@ fun ProfileScreen(
     ) { padding ->
 
         ProfileContent(
-            padding = padding,
+            padding = padding.toBottomlessPadding(),
             state = state.value,
             onClickFollowers = {
                 state.value.userDetail?.let {

@@ -22,9 +22,6 @@ class ProfileViewModel @Inject constructor(
 
     fun getUserDetail() {
         viewModelScope.launch {
-            if (state.value.userDetail != null) {
-                return@launch
-            }
             _state.update {
                 it.copy(
                     isLoading = true,

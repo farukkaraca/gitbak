@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.farukkaraca.gitbak.presentation.common.toBottomlessPadding
 import com.farukkaraca.gitbak.presentation.components.CustomTopAppBar
 import com.farukkaraca.gitbak.presentation.navigation.USER_DETAIL_SCREEN
-import com.farukkaraca.gitbak.presentation.navigation.USER_REPOS_SCREEN
 
 @Composable
 fun UserSearchScreen(
@@ -25,7 +25,7 @@ fun UserSearchScreen(
         }
     ) { padding ->
         UserSearchContent(
-            padding = padding,
+            padding = padding.toBottomlessPadding(),
             state = state.value,
             onSearch = {
                 viewModel.searchUsers(it)

@@ -6,6 +6,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.farukkaraca.gitbak.data.model.User
+import com.farukkaraca.gitbak.presentation.common.toBottomlessPadding
 import com.farukkaraca.gitbak.presentation.components.CustomTopAppBar
 
 @Composable
@@ -23,7 +24,7 @@ fun FFScreen(
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                title = "User Detail",
+                title = "${username.capitalize()} $type",
                 showBackButton = true,
                 onBackClick = {
                     navController.popBackStack()
@@ -33,7 +34,7 @@ fun FFScreen(
     ) { padding ->
 
         FFContent(
-            padding = padding,
+            padding = padding.toBottomlessPadding(),
             state = state.value,
             onClickUser = {
                 onClickUser(it)

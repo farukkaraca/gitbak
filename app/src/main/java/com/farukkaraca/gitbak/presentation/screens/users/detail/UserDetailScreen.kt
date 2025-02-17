@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.farukkaraca.gitbak.presentation.common.toBottomlessPadding
 import com.farukkaraca.gitbak.presentation.components.CustomTopAppBar
 import com.farukkaraca.gitbak.presentation.navigation.FOLLOWERS_SCREEN
 import com.farukkaraca.gitbak.presentation.navigation.FOLLOWING_SCREEN
@@ -19,7 +20,7 @@ fun UserDetailScreen(navController: NavController, username: String) {
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                title = "User Detail",
+                title = "${username.capitalize()} Detail",
                 showBackButton = true,
                 onBackClick = {
                     navController.popBackStack()
@@ -29,7 +30,7 @@ fun UserDetailScreen(navController: NavController, username: String) {
     ) { padding ->
 
         UserDetailContent(
-            padding = padding,
+            padding = padding.toBottomlessPadding(),
             state = state.value,
             onClickFollowers = {
                 navController.navigate("$FOLLOWERS_SCREEN/$username")

@@ -97,4 +97,4 @@ private const val paramCode = "code"
 private const val clientId = BuildConfig.GITHUB_CLIENT_ID
 private const val redirectUri = "http://localhost:3000/callback"
 const val url =
-    "https://github.com/login/oauth/authorize?client_id=$clientId&scope=repo&redirect_url=$redirectUri"
+    "https://github.com/login/oauth/authorize?client_id=$clientId&scope=repo,user&redirect_uri=$redirectUri\n"

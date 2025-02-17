@@ -6,6 +6,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.farukkaraca.gitbak.presentation.common.toBottomlessPadding
 import com.farukkaraca.gitbak.presentation.components.CustomTopAppBar
 
 @Composable
@@ -20,7 +21,7 @@ fun UserReposScreen(navController: NavController, username: String) {
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                title = "User Repositories",
+                title = "${username.capitalize()} Repositories",
                 showBackButton = true,
                 onBackClick = {
                     navController.popBackStack()
@@ -30,7 +31,7 @@ fun UserReposScreen(navController: NavController, username: String) {
     ) { padding ->
 
         UserReposContent(
-            padding = padding,
+            padding = padding.toBottomlessPadding(),
             state = state.value,
             onScroll = { page ->
                 viewModel.fetchUserRepos(username, page)

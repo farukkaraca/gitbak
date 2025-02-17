@@ -53,8 +53,11 @@ fun UserDetailContent(
             else -> {
                 state.userDetail?.let { user ->
                     LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(16.dp)
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentPadding = PaddingValues(
+                            16.dp
+                        )
                     ) {
                         item {
                             ProfileHeader(

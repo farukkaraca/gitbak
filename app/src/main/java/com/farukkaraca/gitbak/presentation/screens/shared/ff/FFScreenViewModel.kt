@@ -30,7 +30,7 @@ class FFScreenViewModel @Inject constructor(
                 return@launch
             }
 
-            val result = if (state.value.type == FFType.Followers.name) {
+            val result = if (state.value.type == FFType.Following.name) {
                 followingUseCase.execute(
                     username = username,
                     page = page,

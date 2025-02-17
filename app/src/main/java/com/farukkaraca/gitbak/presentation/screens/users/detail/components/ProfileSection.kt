@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -36,9 +37,11 @@ fun ProfileSection(
         Spacer(modifier = Modifier.width(12.dp))
 
         Text(
+            modifier = Modifier.padding(end = 32.dp),
             text = content,
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+            textAlign = TextAlign.Justify
         )
     }
 }

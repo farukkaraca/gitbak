@@ -48,7 +48,7 @@ fun InfoText(
                     imageVector = Icons.Rounded.Info,
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
 

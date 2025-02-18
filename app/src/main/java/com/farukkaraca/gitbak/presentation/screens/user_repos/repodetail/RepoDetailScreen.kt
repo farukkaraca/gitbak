@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.farukkaraca.gitbak.presentation.common.toBottomlessPadding
 import com.farukkaraca.gitbak.presentation.components.CustomTopAppBar
 import com.farukkaraca.gitbak.presentation.components.InfoText
 import com.farukkaraca.gitbak.presentation.components.LoadingAnimation
@@ -44,7 +45,7 @@ fun RepoDetailScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .padding(padding.toBottomlessPadding())
         ) {
             when {
                 state.value.isLoading -> {
@@ -90,13 +91,3 @@ private fun RepoDetailScreenPreview() {
         repo = "repo",
     )
 }
-
-
-
-
-
-
-
-
-
-

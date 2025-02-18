@@ -26,6 +26,10 @@ class MainViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     fun fetchAccessTokenAndUser(authCode: String) {
+        if (sessionManager.checkIsLoggedIn()) {
+            return
+        }
+
         setLoading(true)
 
         viewModelScope.launch {

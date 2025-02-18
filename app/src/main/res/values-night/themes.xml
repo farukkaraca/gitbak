@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.GitBak" parent="android:Theme.Material.NoActionBar">
+        <item name="android:background">#001C1B1F</item>
+    </style>
+</resources>

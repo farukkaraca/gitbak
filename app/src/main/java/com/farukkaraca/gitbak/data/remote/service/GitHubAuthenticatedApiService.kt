@@ -1,6 +1,7 @@
 package com.farukkaraca.gitbak.data.remote.service
 
 import com.farukkaraca.gitbak.data.model.GithubRepo
+import com.farukkaraca.gitbak.data.model.RepoDetail
 import com.farukkaraca.gitbak.data.model.User
 import com.farukkaraca.gitbak.data.model.UserDetail
 import com.farukkaraca.gitbak.data.model.UserSearchResponse
@@ -30,7 +31,7 @@ interface GitHubAuthenticatedApiService {
     ): Response<List<GithubRepo>>
 
     @GET("user")
-    suspend fun getUserProfile(): Response<UserDetail>
+    suspend fun getCurrentUser(): Response<UserDetail>
 
     @GET("users/{username}/followers")
     suspend fun getUserFollowers(
@@ -59,5 +60,29 @@ interface GitHubAuthenticatedApiService {
     @DELETE("user/following/{username}")
     suspend fun unfollowUser(
         @Path("username") username: String
+    ): Response<Unit>
+
+    @GET("repos/{owner}/{repo}")
+    suspend fun getRepoDetails(
+        @Path("owner") owner: String,
+        @Path("repo") repo: String
+    ): Response<RepoDetail>
+
+    @GET("user/starred/{owner}/{repo}")
+    suspend fun isStarred(
+        @Path("owner") owner: String,
+        @Path("repo") repo: String
+    ): Response<Unit>
+
+    @PUT("user/starred/{owner}/{repo}")
+    suspend fun starRepo(
+        @Path("owner") owner: String,
+        @Path("repo") repo: String
+    ): Response<Unit>
+
+    @DELETE("user/starred/{owner}/{repo}")
+    suspend fun unstarRepo(
+        @Path("owner") owner: String,
+        @Path("repo") repo: String
     ): Response<Unit>
 }

@@ -1,6 +1,7 @@
 package com.farukkaraca.gitbak.data.remote.service
 
 import com.farukkaraca.gitbak.data.model.GithubRepo
+import com.farukkaraca.gitbak.data.model.RepoDetail
 import com.farukkaraca.gitbak.data.model.User
 import com.farukkaraca.gitbak.data.model.UserDetail
 import com.farukkaraca.gitbak.data.model.UserSearchResponse
@@ -41,4 +42,10 @@ interface GitHubApiService {
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
     ): Response<List<User>>
+
+    @GET("repos/{owner}/{repo}")
+    suspend fun getRepoDetails(
+        @Path("owner") owner: String,
+        @Path("repo") repo: String
+    ): Response<RepoDetail>
 }

@@ -3,7 +3,7 @@ package com.farukkaraca.gitbak.presentation.screens.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.farukkaraca.gitbak.data.model.ApiResponse
-import com.farukkaraca.gitbak.domain.usecase.GetUserProfileUseCase
+import com.farukkaraca.gitbak.domain.usecase.GetCurrentUserUseCase
 import com.farukkaraca.gitbak.presentation.state.Error
 import com.farukkaraca.gitbak.presentation.state.ProfileState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val profileUseCase: GetUserProfileUseCase
+    private val currentUserUseCase: GetCurrentUserUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow<ProfileState>(ProfileState())
     val state = _state.asStateFlow()
@@ -28,7 +28,7 @@ class ProfileViewModel @Inject constructor(
                 )
             }
 
-            val result = profileUseCase.execute()
+            val result = currentUserUseCase.execute()
 
             when (result) {
                 is ApiResponse.Success -> {

@@ -3,6 +3,7 @@ package com.farukkaraca.gitbak.presentation
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -32,6 +33,17 @@ class MainActivity : ComponentActivity() {
             val usersNavController = rememberNavController()
             val profileNavController = rememberNavController()
 
+            LaunchedEffect(state.value.uiEvent) {
+                state.value.uiEvent?.let { event ->
+                    when (event) {
+                        is UiEvent.ShowToast -> {
+                            Toast.makeText(baseContext, event.message, Toast.LENGTH_SHORT).show()
+                            mainViewModel.onUiEventHandled()
+                        }
+                    }
+                }
+            }
+
             LaunchedEffect(state.value.loginSuccess) {
                 if (state.value.loginSuccess) {
                     usersNavController.navigate(USER_SEARCH_SCREEN) {
@@ -49,7 +61,6 @@ class MainActivity : ComponentActivity() {
             }
 
             GitBakTheme {
-
                 if (state.value.loginSuccess) {
                     BottomNavigation(
                         state = state.value,
@@ -82,7 +93,7 @@ class MainActivity : ComponentActivity() {
         uri?.let {
             val authCode = it.getQueryParameter(paramCode)
             authCode?.let { code ->
-                mainViewModel.fetchAccessToken(code)
+                mainViewModel.fetchAccessTokenAndUser(code)
             }
         }
     }
@@ -97,4 +108,4 @@ private const val paramCode = "code"
 private const val clientId = BuildConfig.GITHUB_CLIENT_ID
 private const val redirectUri = "http://localhost:3000/callback"
 const val url =
-    "https://github.com/login/oauth/authorize?client_id=$clientId&scope=repo,user&redirect_uri=$redirectUri\n"
+    "https://github.com/login/oauth/authorize?client_id=$clientId&scope=repo,user&redirect_uri=$redirectUri"

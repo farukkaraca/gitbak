@@ -8,6 +8,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.farukkaraca.gitbak.presentation.common.toBottomlessPadding
 import com.farukkaraca.gitbak.presentation.components.CustomTopAppBar
+import com.farukkaraca.gitbak.presentation.navigation.USER_REPO_DETAIL
 
 @Composable
 fun UserReposScreen(navController: NavController, username: String) {
@@ -35,6 +36,11 @@ fun UserReposScreen(navController: NavController, username: String) {
             state = state.value,
             onScroll = { page ->
                 viewModel.fetchUserRepos(username, page)
+            },
+            onClickRepo = { repoDetail ->
+                navController.navigate(
+                    "$USER_REPO_DETAIL/${repoDetail.owner.login}/${repoDetail.name}"
+                )
             }
         )
     }

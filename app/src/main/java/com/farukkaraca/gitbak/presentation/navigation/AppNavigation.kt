@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.farukkaraca.gitbak.presentation.screens.onboarding.OnboardingScreen
 import com.farukkaraca.gitbak.presentation.screens.shared.ff.FFScreen
 import com.farukkaraca.gitbak.presentation.screens.user_repos.UserReposScreen
+import com.farukkaraca.gitbak.presentation.screens.user_repos.repodetail.RepoDetailScreen
 import com.farukkaraca.gitbak.presentation.screens.users.detail.UserDetailScreen
 import com.farukkaraca.gitbak.presentation.screens.users.search.UserSearchScreen
 import com.farukkaraca.gitbak.presentation.state.FFType
@@ -66,6 +67,12 @@ fun AppNavigation(
                     navController.navigate("$USER_DETAIL_SCREEN/${it.login}")
                 }
             )
+        }
+
+        composable("$USER_REPO_DETAIL/{username}/{repo}") { backStackEntry ->
+            val username = backStackEntry.arguments?.getString("username") ?: ""
+            val repo = backStackEntry.arguments?.getString("repo") ?: ""
+            RepoDetailScreen(navController = navController, username = username, repo = repo)
         }
     }
 }

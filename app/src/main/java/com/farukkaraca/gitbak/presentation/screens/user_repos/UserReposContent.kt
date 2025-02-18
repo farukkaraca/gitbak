@@ -16,6 +16,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.farukkaraca.gitbak.data.model.GithubRepo
 import com.farukkaraca.gitbak.presentation.components.InfoText
 import com.farukkaraca.gitbak.presentation.components.LoadingAnimation
 import com.farukkaraca.gitbak.presentation.screens.user_repos.components.RepoCard
@@ -26,6 +27,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 fun UserReposContent(
     padding: PaddingValues,
     state: UserReposState,
+    onClickRepo: (GithubRepo) -> Unit,
     onScroll: (page: Int) -> Unit
 ) {
     val listState = rememberLazyListState()
@@ -79,7 +81,10 @@ fun UserReposContent(
                 ) {
                     itemsIndexed(state.repos) { index, repo ->
                         RepoCard(
-                            repo = repo
+                            repo = repo,
+                            onClickRepo = {
+                                onClickRepo(it)
+                            }
                         )
                     }
 

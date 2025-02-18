@@ -33,12 +33,15 @@ import com.farukkaraca.gitbak.data.model.GithubRepo
 @Composable
 fun RepoCard(
     repo: GithubRepo,
+    onClickRepo: (GithubRepo) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { },
+            .clickable {
+                onClickRepo(repo)
+            },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         colors = CardDefaults.cardColors(

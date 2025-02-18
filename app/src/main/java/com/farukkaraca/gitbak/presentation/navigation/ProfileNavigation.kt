@@ -7,14 +7,13 @@ import androidx.navigation.compose.composable
 import com.farukkaraca.gitbak.presentation.screens.profile.ProfileScreen
 import com.farukkaraca.gitbak.presentation.screens.shared.ff.FFScreen
 import com.farukkaraca.gitbak.presentation.screens.user_repos.UserReposScreen
+import com.farukkaraca.gitbak.presentation.screens.user_repos.repodetail.RepoDetailScreen
 import com.farukkaraca.gitbak.presentation.screens.users.detail.UserDetailScreen
 import com.farukkaraca.gitbak.presentation.state.FFType
-import com.farukkaraca.gitbak.presentation.state.MainState
 
 @Composable
 fun ProfileNavigation(
     navController: NavHostController,
-    state: MainState,
     onClickLogout: () -> Unit,
 ) {
 
@@ -71,6 +70,12 @@ fun ProfileNavigation(
         composable("$USER_REPOS_SCREEN/{username}") { backStackEntry ->
             val username = backStackEntry.arguments?.getString("username") ?: ""
             UserReposScreen(navController = navController, username = username)
+        }
+
+        composable("$USER_REPO_DETAIL/{username}/{repo}") { backStackEntry ->
+            val username = backStackEntry.arguments?.getString("username") ?: ""
+            val repo = backStackEntry.arguments?.getString("repo") ?: ""
+            RepoDetailScreen(navController = navController, username = username, repo = repo)
         }
     }
 }

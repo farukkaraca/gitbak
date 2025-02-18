@@ -93,7 +93,6 @@ fun BottomNavigation(
 
                 1 -> ProfileNavigation(
                     navController = profileNavController,
-                    state = state,
                     onClickLogout = onClickLogout
                 )
             }

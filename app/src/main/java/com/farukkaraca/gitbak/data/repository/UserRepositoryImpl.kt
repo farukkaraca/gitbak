@@ -3,6 +3,7 @@ package com.farukkaraca.gitbak.data.repository
 import com.farukkaraca.gitbak.data.common.toResult
 import com.farukkaraca.gitbak.data.model.ApiResponse
 import com.farukkaraca.gitbak.data.model.GithubRepo
+import com.farukkaraca.gitbak.data.model.RepoDetail
 import com.farukkaraca.gitbak.data.model.User
 import com.farukkaraca.gitbak.data.model.UserDetail
 import com.farukkaraca.gitbak.data.model.UserSearchResponse
@@ -65,10 +66,10 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUserProfile(): ApiResponse<UserDetail> {
+    override suspend fun getCurrentUser(): ApiResponse<UserDetail> {
         try {
             if (sessionManager.checkIsLoggedIn()) {
-                val response = authenticatedApiService.getUserProfile()
+                val response = authenticatedApiService.getCurrentUser()
                 return response.toResult()
             } else {
                 return ApiResponse.Error(Exception("auth required"))
@@ -161,6 +162,68 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun unFollowUser(username: String): ApiResponse<Boolean> {
         return try {
             val response = authenticatedApiService.unfollowUser(username)
+            when (response.code()) {
+                204 -> ApiResponse.Success(true)
+                404 -> ApiResponse.Success(false)
+                401 -> ApiResponse.Error(Exception("Unauthorized"))
+                else -> ApiResponse.Error(Exception("Unknown error: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            return ApiResponse.Error(e)
+        }
+    }
+
+    override suspend fun getRepoDetail(username: String, repo: String): ApiResponse<RepoDetail> {
+        try {
+            if (sessionManager.checkIsLoggedIn()) {
+                val response = authenticatedApiService.getRepoDetails(
+                    username,
+                    repo,
+                )
+                return response.toResult()
+            } else {
+                val response = apiService.getRepoDetails(
+                    username,
+                    repo,
+                )
+                return response.toResult()
+            }
+        } catch (e: Exception) {
+            return ApiResponse.Error(e)
+        }
+    }
+
+    override suspend fun isStarred(username: String, repo: String): ApiResponse<Boolean> {
+        return try {
+            val response = authenticatedApiService.isStarred(username, repo)
+            when (response.code()) {
+                204 -> ApiResponse.Success(true)
+                404 -> ApiResponse.Success(false)
+                401 -> ApiResponse.Error(Exception("Unauthorized"))
+                else -> ApiResponse.Error(Exception("Unknown error: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            return ApiResponse.Error(e)
+        }
+    }
+
+    override suspend fun starRepo(username: String, repo: String): ApiResponse<Boolean> {
+        return try {
+            val response = authenticatedApiService.starRepo(username, repo)
+            when (response.code()) {
+                204 -> ApiResponse.Success(true)
+                404 -> ApiResponse.Success(false)
+                401 -> ApiResponse.Error(Exception("Unauthorized"))
+                else -> ApiResponse.Error(Exception("Unknown error: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            return ApiResponse.Error(e)
+        }
+    }
+
+    override suspend fun unStarRepo(username: String, repo: String): ApiResponse<Boolean> {
+        return try {
+            val response = authenticatedApiService.unstarRepo(username, repo)
             when (response.code()) {
                 204 -> ApiResponse.Success(true)
                 404 -> ApiResponse.Success(false)

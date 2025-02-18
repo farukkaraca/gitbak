@@ -84,7 +84,7 @@ fun OnboardingScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = "Explore GitHub",
+                text = "Explore GitBak",
                 style = MaterialTheme.typography.headlineLarge.copy(
                     fontWeight = FontWeight.Bold
                 ),

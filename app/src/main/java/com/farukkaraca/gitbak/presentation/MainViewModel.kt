@@ -2,9 +2,9 @@ package com.farukkaraca.gitbak.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.farukkaraca.gitbak.data.model.AccessToken
 import com.farukkaraca.gitbak.data.model.ApiResponse
 import com.farukkaraca.gitbak.data.session.SessionManager
+import com.farukkaraca.gitbak.domain.usecase.CurrentUserUseCase
 import com.farukkaraca.gitbak.domain.usecase.GithubAuthUseCase
 import com.farukkaraca.gitbak.presentation.state.Error
 import com.farukkaraca.gitbak.presentation.state.MainState
@@ -18,17 +18,72 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val sessionManager: SessionManager,
-    private val githubAuthUseCase: GithubAuthUseCase
+    private val githubAuthUseCase: GithubAuthUseCase,
+    private val getCurrentUserUseCase: CurrentUserUseCase,
 ) : ViewModel() {
+
     private val _state = MutableStateFlow<MainState>(MainState())
     val state = _state.asStateFlow()
 
-    fun userIsLogging(): Boolean {
-        return sessionManager.checkIsLoggedIn()
+    fun fetchAccessTokenAndUser(authCode: String) {
+        setLoading(true)
+
+        viewModelScope.launch {
+            val fetchAccessTokenResult = githubAuthUseCase.execute(authCode)
+            if (fetchAccessTokenResult is ApiResponse.Error) {
+                _state.update {
+                    it.copy(
+                        errorAccessToken = Error(
+                            isError = true,
+                            message = fetchAccessTokenResult.exception.message
+                        )
+                    )
+                }
+                showError("Error when signing")
+                return@launch
+            }
+
+            val accessToken = (fetchAccessTokenResult as ApiResponse.Success).data
+            sessionManager.setAccessToken(accessToken)
+
+            val fetchUserResult = getCurrentUserUseCase.execute()
+            if (fetchUserResult is ApiResponse.Error) {
+                _state.update {
+                    it.copy(
+                        errorCurrentUser = Error(
+                            isError = true,
+                            message = fetchUserResult.exception.message
+                        )
+                    )
+                }
+                showError("Error when signing")
+                return@launch
+            }
+
+            val user = (fetchUserResult as ApiResponse.Success).data
+            sessionManager.setCurrentUser(user)
+
+            setLoading(false)
+            setSuccess(true)
+        }
+
+
     }
 
-    fun login(accessToken: AccessToken) {
-        sessionManager.login(accessToken)
+    private fun setLoading(isLoading: Boolean) {
+        _state.update {
+            it.copy(
+                isLoading = isLoading
+            )
+        }
+    }
+
+    private fun setSuccess(isSuccess: Boolean) {
+        _state.update {
+            it.copy(
+                loginSuccess = isSuccess
+            )
+        }
     }
 
     fun logout() {
@@ -41,44 +96,23 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun fetchAccessToken(autCode: String) {
-        viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    isLoading = true,
-                )
-            }
-
-            val result = githubAuthUseCase.execute(autCode)
-
-            when (result) {
-                is ApiResponse.Success -> {
-                    login(
-                        result.data
-                    )
-
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            loginSuccess = true
-                        )
-                    }
-                }
-
-                is ApiResponse.Error -> {
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            error = Error(
-                                isError = true,
-                                message = result.exception.message
-                            )
-                        )
-                    }
-                }
-
-                else -> {}
-            }
+    fun onUiEventHandled() {
+        _state.update {
+            it.copy(
+                uiEvent = null
+            )
         }
     }
+
+    private fun showError(error: String) {
+        _state.update {
+            it.copy(
+                uiEvent = UiEvent.ShowToast(error)
+            )
+        }
+    }
+}
+
+sealed class UiEvent {
+    data class ShowToast(val message: String) : UiEvent()
 }

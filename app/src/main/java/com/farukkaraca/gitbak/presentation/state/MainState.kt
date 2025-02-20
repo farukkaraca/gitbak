@@ -1,6 +1,6 @@
 package com.farukkaraca.gitbak.presentation.state
 
-import com.farukkaraca.gitbak.presentation.UiEvent
+import com.farukkaraca.gitbak.presentation.screens.main.UiEvent
 
 data class MainState(
     val isLoading: Boolean = false,
@@ -8,5 +8,5 @@ data class MainState(
     val errorCurrentUser: Error = Error(),
     val loginSuccess: Boolean = false,
     val isLogout: Boolean = false,
-    val uiEvent: UiEvent ?= null,
+    val uiEvent: UiEvent?= null,
 )

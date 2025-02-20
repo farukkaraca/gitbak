@@ -1,4 +1,4 @@
-package com.farukkaraca.gitbak.presentation
+package com.farukkaraca.gitbak.presentation.screens.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -70,8 +70,6 @@ class MainViewModel @Inject constructor(
             setLoading(false)
             setSuccess(true)
         }
-
-
     }
 
     private fun setLoading(isLoading: Boolean) {

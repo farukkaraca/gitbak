@@ -36,7 +36,7 @@ fun UserReposContent(
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
             .distinctUntilChanged()
             .collect { lastIndex ->
-                if (lastIndex == state.repos.lastIndex) {
+                if (lastIndex == state.repos.lastIndex && !state.isScroll) {
                     onScroll(state.page + 1)
                 }
             }
@@ -45,8 +45,8 @@ fun UserReposContent(
 
     Box(
         modifier = Modifier
+            .fillMaxSize()
             .padding(padding)
-            .fillMaxWidth()
     ) {
         when {
             state.isLoading -> {

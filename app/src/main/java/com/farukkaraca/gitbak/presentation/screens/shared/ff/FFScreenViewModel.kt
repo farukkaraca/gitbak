@@ -30,6 +30,18 @@ class FFScreenViewModel @Inject constructor(
                 return@launch
             }
 
+            if (page == 1 && state.value.users.isNotEmpty()) {
+                return@launch
+            }
+
+            if (page != state.value.page) {
+                _state.update {
+                    it.copy(
+                        isScroll = true
+                    )
+                }
+            }
+
             val result = if (state.value.type == FFType.Following.name) {
                 followingUseCase.execute(
                     username = username,
@@ -44,14 +56,29 @@ class FFScreenViewModel @Inject constructor(
                 )
             }
 
-
             when (result) {
                 is ApiResponse.Success -> {
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            users = result.data
-                        )
+                    if (state.value.users.isNotEmpty()) {
+                        val users = state.value.users.toMutableList()
+                        users.addAll(result.data)
+
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                                isScroll = false,
+                                users = users,
+                                page = page
+                            )
+                        }
+
+                    } else {
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                                isScroll = false,
+                                users = result.data
+                            )
+                        }
                     }
                 }
 
@@ -59,6 +86,7 @@ class FFScreenViewModel @Inject constructor(
                     _state.update {
                         it.copy(
                             isLoading = false,
+                            isScroll = false,
                             error = Error(
                                 isError = true,
                                 message = result.exception.message

@@ -34,12 +34,6 @@ class UserReposViewModel @Inject constructor(
                 return@launch
             }
 
-            _state.update {
-                it.copy(
-                    page = page,
-                )
-            }
-
             val result = userReposUseCase.execute(
                 username = username,
                 page = state.value.page,
@@ -56,7 +50,8 @@ class UserReposViewModel @Inject constructor(
                             it.copy(
                                 isLoading = false,
                                 isScroll = false,
-                                repos = repos
+                                repos = repos,
+                                page = page
                             )
                         }
 

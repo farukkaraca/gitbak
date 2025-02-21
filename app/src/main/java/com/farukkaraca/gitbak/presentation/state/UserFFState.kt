@@ -6,6 +6,7 @@ import com.farukkaraca.gitbak.data.model.User
 data class UserFFState(
     val type: String = FFType.None.name,
     val isLoading: Boolean = true,
+    val isScroll: Boolean = false,
     val page: Int = 1,
     val perPage: Int = 30,
     val users: List<User> = emptyList(),

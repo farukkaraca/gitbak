@@ -2,6 +2,7 @@ package com.farukkaraca.gitbak.presentation.screens.shared.ff
 
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -19,7 +20,10 @@ fun FFScreen(
     val viewModel = hiltViewModel<FFScreenViewModel>()
     val state = viewModel.state.collectAsStateWithLifecycle()
     viewModel.setType(type)
-    viewModel.fetchUsers(username, state.value.page)
+
+    LaunchedEffect (username) {
+        viewModel.fetchUsers(username, state.value.page)
+    }
 
     Scaffold(
         topBar = {
@@ -38,6 +42,9 @@ fun FFScreen(
             state = state.value,
             onClickUser = {
                 onClickUser(it)
+            },
+            onScroll = { page ->
+                viewModel.fetchUsers(username, page)
             }
         )
     }

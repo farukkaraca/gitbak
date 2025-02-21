@@ -97,4 +97,6 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
 
     implementation(libs.converter.gson)
+
+    implementation (libs.androidx.security.crypto)
 }

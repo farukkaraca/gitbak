@@ -31,7 +31,7 @@ import com.farukkaraca.gitbak.data.model.UserDetail
 @Composable
 fun ProfileImageWithZoom(user: UserDetail?) {
     val context = LocalContext.current
-    var isZoomed by remember { mutableStateOf(true) }
+    var isZoomed by remember { mutableStateOf(false) }
 
     Box(contentAlignment = Alignment.Center) {
         AsyncImage(

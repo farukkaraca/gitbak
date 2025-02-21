@@ -16,6 +16,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainViewModel = ViewModelProvider(this)[MainViewModel::class]
+        mainViewModel.getAccessTokenFromDevice()
         enableEdgeToEdge()
         setContent { MainScreen(mainViewModel) }
     }

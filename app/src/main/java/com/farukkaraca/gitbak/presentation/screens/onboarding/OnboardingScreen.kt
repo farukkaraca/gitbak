@@ -46,119 +46,128 @@ fun OnboardingScreen(
     state: MainState,
     onLoginClick: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(24.dp)
-            .then(
-                if (state.isLoading) {
-                    Modifier.pointerInput(Unit) {
-                        detectTapGestures {}
-                    }
-                } else {
-                    Modifier
-                }
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    if (state.showLoading) {
         Box(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.onboarding),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth(0.8f)
-                    .aspectRatio(1f),
-                contentScale = ContentScale.Fit
-            )
+            LoadingAnimation()
         }
-
+    } else {
         Column(
-            modifier = Modifier.padding(vertical = 32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Text(
-                text = "Explore GitBak",
-                style = MaterialTheme.typography.headlineLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
-                ),
-                textAlign = TextAlign.Center
-            )
-
-            Text(
-                text = "Discover repositories, connect with developers and manage your GitHub journey",
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                ),
-                modifier = Modifier.padding(horizontal = 24.dp)
-            )
-        }
-
-        Column(
-            modifier = Modifier.padding(bottom = 32.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Button(
-                onClick = onLoginClick,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp)
-                    .padding(horizontal = 28.dp),
-                shape = RoundedCornerShape(10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
-                )
-            ) {
-                if (state.isLoading) {
-                    LoadingAnimation(
-                        circleColor = MaterialTheme.colorScheme.onPrimary,
-                        circleSize = 10.dp
-                    )
-                } else {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_github),
-                            contentDescription = null,
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "Sign in with GitHub",
-                            style = MaterialTheme.typography.titleMedium.copy(
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        )
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface)
+                .padding(24.dp)
+                .then(
+                    if (state.showButtonLoading) {
+                        Modifier.pointerInput(Unit) {
+                            detectTapGestures {}
+                        }
+                    } else {
+                        Modifier
                     }
-                }
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.onboarding),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .aspectRatio(1f),
+                    contentScale = ContentScale.Fit
+                )
             }
 
-            TextButton(
-                onClick = {
-                    navController.navigate(USER_SEARCH_SCREEN) {
-                        popUpTo(ONBOARDING_SCREEN) { inclusive = true }
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp)
+            Column(
+                modifier = Modifier.padding(vertical = 32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = "Continue without signing in",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    text = "Explore GitBak",
+                    style = MaterialTheme.typography.headlineLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    ),
+                    textAlign = TextAlign.Center
                 )
+
+                Text(
+                    text = "Discover repositories, connect with developers and manage your GitHub journey",
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                    ),
+                    modifier = Modifier.padding(horizontal = 24.dp)
+                )
+            }
+
+            Column(
+                modifier = Modifier.padding(bottom = 32.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Button(
+                    onClick = onLoginClick,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
+                        .padding(horizontal = 28.dp),
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                ) {
+                    if (state.showButtonLoading) {
+                        LoadingAnimation(
+                            circleColor = MaterialTheme.colorScheme.onPrimary,
+                            circleSize = 10.dp
+                        )
+                    } else {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_github),
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "Sign in with GitHub",
+                                style = MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            )
+                        }
+                    }
+                }
+
+                TextButton(
+                    onClick = {
+                        navController.navigate(USER_SEARCH_SCREEN) {
+                            popUpTo(ONBOARDING_SCREEN) { inclusive = true }
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp)
+                ) {
+                    Text(
+                        text = "Continue without signing in",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
         }
     }

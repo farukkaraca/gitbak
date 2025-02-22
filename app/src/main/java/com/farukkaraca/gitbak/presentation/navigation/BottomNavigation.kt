@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.farukkaraca.gitbak.presentation.common.toToplessPadding
 import com.farukkaraca.gitbak.presentation.state.MainState
 
 @Composable
@@ -82,7 +83,7 @@ fun BottomNavigation(
             }
         }
     ) { padding ->
-        Surface(modifier = Modifier.padding(padding)) {
+        Surface(modifier = Modifier.padding(padding.toToplessPadding())) {
             when (selectedTab) {
 
                 0 -> AppNavigation(

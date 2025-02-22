@@ -16,3 +16,13 @@ fun PaddingValues.toBottomlessPadding(): PaddingValues {
         bottom = 2.dp
     )
 }
+
+@Composable
+fun PaddingValues.toToplessPadding(): PaddingValues {
+    return PaddingValues(
+        start = calculateStartPadding(LocalLayoutDirection.current),
+        top = 0.dp,
+        end = calculateEndPadding(LocalLayoutDirection.current),
+        bottom = calculateBottomPadding()
+    )
+}

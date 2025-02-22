@@ -139,6 +139,7 @@ fun UserCard(
 @Composable
 private fun UserCardPreview(
     user: User = User(
+        id = -1,
         login = "test",
         avatar_url = "",
         score = "1.0"

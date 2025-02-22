@@ -8,7 +8,7 @@ data class UserSearchResponse(
 
 data class User(
     val login: String ? = null,
-    val id: Int? = null,
+    val id: Int,
     val node_id: String? = null,
     val avatar_url: String? = null,
     val html_url: String? = null,

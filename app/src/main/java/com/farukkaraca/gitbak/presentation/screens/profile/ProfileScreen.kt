@@ -1,5 +1,6 @@
 package com.farukkaraca.gitbak.presentation.screens.profile
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Logout
@@ -8,6 +9,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -53,17 +55,23 @@ fun ProfileScreen(
             state = state.value,
             onClickFollowers = {
                 state.value.userDetail?.let {
-                    onClickFollowers(it)
+                    if (it.followers > 0) {
+                        onClickFollowers(it)
+                    }
                 }
             },
             onClickFollowing = {
                 state.value.userDetail?.let {
-                    onClickFollowing(it)
+                    if (it.following > 0) {
+                        onClickFollowing(it)
+                    }
                 }
             },
             onClickRepos = {
                 state.value.userDetail?.let {
-                    onClickRepos(it)
+                    if (it.public_repos > 0) {
+                        onClickRepos(it)
+                    }
                 }
             }
         )

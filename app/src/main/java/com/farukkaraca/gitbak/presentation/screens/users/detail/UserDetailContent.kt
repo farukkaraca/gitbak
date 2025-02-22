@@ -81,13 +81,19 @@ fun UserDetailContent(
                             StatsSection(
                                 user = user,
                                 onClickFollowers = {
-                                    onClickFollowers()
+                                    if (user.followers > 0) {
+                                        onClickFollowers()
+                                    }
                                 },
                                 onClickFollowing = {
-                                    onClickFollowing()
+                                    if (user.following > 0) {
+                                        onClickFollowing()
+                                    }
                                 },
                                 onClickRepos = {
-                                    onClickRepos()
+                                    if (user.public_repos > 0) {
+                                        onClickRepos()
+                                    }
                                 }
                             )
                         }

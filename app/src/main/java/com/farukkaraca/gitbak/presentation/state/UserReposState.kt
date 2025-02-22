@@ -1,12 +1,13 @@
 package com.farukkaraca.gitbak.presentation.state
 
+import androidx.paging.PagingData
 import com.farukkaraca.gitbak.data.model.GithubRepo
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 data class UserReposState(
     val isLoading: Boolean = true,
-    val isScroll: Boolean = false,
-    val page: Int = 1,
-    val perPage: Int = 10,
-    val repos: List<GithubRepo> = emptyList(),
+    val repoCount: Int = 0,
     val error: Error = Error(),
+    val pagingData: Flow<PagingData<GithubRepo>> = emptyFlow()
 )

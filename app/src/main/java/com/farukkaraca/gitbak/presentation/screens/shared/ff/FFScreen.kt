@@ -21,8 +21,8 @@ fun FFScreen(
     val state = viewModel.state.collectAsStateWithLifecycle()
     viewModel.setType(type)
 
-    LaunchedEffect (username) {
-        viewModel.fetchUsers(username, state.value.page)
+    LaunchedEffect(username) {
+        viewModel.fetchUsers(username)
     }
 
     Scaffold(
@@ -43,9 +43,6 @@ fun FFScreen(
             onClickUser = {
                 onClickUser(it)
             },
-            onScroll = { page ->
-                viewModel.fetchUsers(username, page)
-            }
         )
     }
 }

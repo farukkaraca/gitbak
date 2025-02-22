@@ -11,12 +11,15 @@ import com.farukkaraca.gitbak.presentation.components.CustomTopAppBar
 import com.farukkaraca.gitbak.presentation.navigation.USER_REPO_DETAIL
 
 @Composable
-fun UserReposScreen(navController: NavController, username: String) {
+fun UserReposScreen(
+    navController: NavController,
+    username: String,
+) {
     val viewModel = hiltViewModel<UserReposViewModel>()
     val state = viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(username) {
-        viewModel.fetchUserRepos(username = username, page = state.value.page)
+        viewModel.fetchUserRepos(username)
     }
 
     Scaffold(
@@ -30,13 +33,9 @@ fun UserReposScreen(navController: NavController, username: String) {
             )
         }
     ) { padding ->
-
         UserReposContent(
             padding = padding.toBottomlessPadding(),
             state = state.value,
-            onScroll = { page ->
-                viewModel.fetchUserRepos(username, page)
-            },
             onClickRepo = { repoDetail ->
                 navController.navigate(
                     "$USER_REPO_DETAIL/${repoDetail.owner.login}/${repoDetail.name}"

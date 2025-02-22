@@ -2,7 +2,7 @@ package com.farukkaraca.gitbak.presentation.screens.shared.ff
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.farukkaraca.gitbak.data.model.ApiResponse
+import androidx.paging.cachedIn
 import com.farukkaraca.gitbak.domain.usecase.UserFollowersUseCase
 import com.farukkaraca.gitbak.domain.usecase.UserFollowingUseCase
 import com.farukkaraca.gitbak.presentation.state.Error
@@ -24,78 +24,34 @@ class FFScreenViewModel @Inject constructor(
     private val _state = MutableStateFlow<UserFFState>(UserFFState())
     val state = _state.asStateFlow()
 
-    fun fetchUsers(username: String, page: Int) {
+    fun fetchUsers(username: String) {
         viewModelScope.launch {
-            if (state.value.type == FFType.None.name) {
-                return@launch
-            }
+            _state.update { it.copy(isLoading = true) }
+            try {
+                val pagingDataFlow = if (state.value.type == FFType.Followers.name) {
+                    followersUseCase.execute(username)
+                        .cachedIn(viewModelScope)
+                } else {
+                    followingUseCase.execute(username)
+                        .cachedIn(viewModelScope)
+                }
 
-            if (page == 1 && state.value.users.isNotEmpty()) {
-                return@launch
-            }
-
-            if (page != state.value.page) {
                 _state.update {
                     it.copy(
-                        isScroll = true
+                        isLoading = false,
+                        pagingData = pagingDataFlow
                     )
                 }
-            }
-
-            val result = if (state.value.type == FFType.Following.name) {
-                followingUseCase.execute(
-                    username = username,
-                    page = page,
-                    perPage = state.value.perPage
-                )
-            } else {
-                followersUseCase.execute(
-                    username = username,
-                    page = page,
-                    perPage = state.value.perPage
-                )
-            }
-
-            when (result) {
-                is ApiResponse.Success -> {
-                    if (state.value.users.isNotEmpty()) {
-                        val users = state.value.users.toMutableList()
-                        users.addAll(result.data)
-
-                        _state.update {
-                            it.copy(
-                                isLoading = false,
-                                isScroll = false,
-                                users = users,
-                                page = page
-                            )
-                        }
-
-                    } else {
-                        _state.update {
-                            it.copy(
-                                isLoading = false,
-                                isScroll = false,
-                                users = result.data
-                            )
-                        }
-                    }
-                }
-
-                is ApiResponse.Error -> {
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            isScroll = false,
-                            error = Error(
-                                isError = true,
-                                message = result.exception.message
-                            )
+            } catch (e: Exception) {
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        error = Error(
+                            isError = true,
+                            message = e.message
                         )
-                    }
+                    )
                 }
-
-                else -> {}
             }
         }
     }

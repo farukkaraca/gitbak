@@ -2,7 +2,7 @@ package com.farukkaraca.gitbak.presentation.screens.user_repos
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.farukkaraca.gitbak.data.model.ApiResponse
+import androidx.paging.cachedIn
 import com.farukkaraca.gitbak.domain.usecase.UserReposUseCase
 import com.farukkaraca.gitbak.presentation.state.Error
 import com.farukkaraca.gitbak.presentation.state.UserReposState
@@ -17,69 +17,32 @@ import javax.inject.Inject
 class UserReposViewModel @Inject constructor(
     private val userReposUseCase: UserReposUseCase
 ) : ViewModel() {
-    private val _state = MutableStateFlow<UserReposState>(UserReposState())
+    private val _state = MutableStateFlow(UserReposState())
     val state = _state.asStateFlow()
 
-    fun fetchUserRepos(username: String, page: Int) {
+    fun fetchUserRepos(username: String) {
         viewModelScope.launch {
-            if (page != state.value.page) {
+            _state.update { it.copy(isLoading = true) }
+            try {
+                val pagingDataFlow = userReposUseCase.execute(username)
+                    .cachedIn(viewModelScope)
+
                 _state.update {
                     it.copy(
-                        isScroll = true
+                        isLoading = false,
+                        pagingData = pagingDataFlow
                     )
                 }
-            }
-
-            if (page == 1 && state.value.repos.isNotEmpty()) {
-                return@launch
-            }
-
-            val result = userReposUseCase.execute(
-                username = username,
-                page = state.value.page,
-                perPage = state.value.perPage
-            )
-
-            when (result) {
-                is ApiResponse.Success -> {
-                    if (state.value.repos.isNotEmpty()) {
-                        val repos = state.value.repos.toMutableList()
-                        repos.addAll(result.data)
-
-                        _state.update {
-                            it.copy(
-                                isLoading = false,
-                                isScroll = false,
-                                repos = repos,
-                                page = page
-                            )
-                        }
-
-                    } else {
-                        _state.update {
-                            it.copy(
-                                isLoading = false,
-                                isScroll = false,
-                                repos = result.data
-                            )
-                        }
-                    }
-                }
-
-                is ApiResponse.Error -> {
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            isScroll = false,
-                            error = Error(
-                                isError = true,
-                                message = result.exception.message
-                            )
+            } catch (e: Exception) {
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        error = Error(
+                            isError = true,
+                            message = e.message
                         )
-                    }
+                    )
                 }
-
-                else -> {}
             }
         }
     }
